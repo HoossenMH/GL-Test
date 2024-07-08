@@ -1,6 +1,7 @@
 ﻿using GLTest.Core.Common;
 using GLTest.Core.DataModels;
 using GLTest.Core.Domains.Categories;
+using GLTest.Core.Domains.ProductCategories;
 using GLTest.Core.Domains.Products;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +13,8 @@ namespace GLTest.Core.Contexts
 
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
+
+        public DbSet<ProductCategory> ProductCategories { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options, Configuration config) : base(options)
         {
@@ -30,6 +33,7 @@ namespace GLTest.Core.Contexts
         {
             builder.ApplyConfiguration(new CategoryConfigurations());
             builder.ApplyConfiguration(new ProductConfigurations());
+            builder.ApplyConfiguration(new ProductCategoryConfigurations());
         }
     }
 }

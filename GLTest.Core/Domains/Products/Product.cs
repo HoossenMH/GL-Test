@@ -1,4 +1,5 @@
 ﻿using GLTest.Core.Domains.Categories;
+using GLTest.Core.Domains.ProductCategories;
 
 namespace GLTest.Core.Domains.Products
 {
@@ -6,8 +7,8 @@ namespace GLTest.Core.Domains.Products
     {
         public Guid ProductId { get; private set; }
         public string ProductName { get; private set; }
-        public Guid? CategoryId { get; private set; }
-        public Category? Category { get; private set; }
+
+        public ICollection<ProductCategory> ProductCategories { get; set; }
 
         protected Product() { }
 
@@ -19,9 +20,14 @@ namespace GLTest.Core.Domains.Products
             };
         }
 
-        public void SetCategory(Guid categoryId)
+        public void AddCategory(Category category)
         {
-            CategoryId = categoryId;
+            if (ProductCategories.Any(pc => pc.CategoryId == category.CategoryId))
+            {
+                throw new InvalidOperationException("Category already added to this product.");
+            }
+
+            ProductCategories.Add(new ProductCategory { ProductId = this.ProductId, CategoryId = category.CategoryId });
         }
     }
 }

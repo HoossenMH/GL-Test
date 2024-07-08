@@ -29,8 +29,15 @@ namespace GLTest.Core.Commands.Products
             if (category == null)
                 return new CommandResult<bool>("Set_Product_Category_Category_NotFound", "Category not found. ");
 
-            product.SetCategory(category.CategoryId);
-            await _unitOfWork.CommitAsync();
+            try
+            {
+                product.AddCategory(category);
+                await _unitOfWork.CommitAsync();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return new CommandResult<bool>("Set_Product_Category_Duplicate", ex.Message);
+            }
 
             return new CommandResult<bool>(true);
         }
